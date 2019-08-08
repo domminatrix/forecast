@@ -3,5 +3,9 @@ language: minimal
 services:
   - docker
 
+before_install:
+  - echo $DARKSKY_API | tee /etc/forecast/darksky_api_key
+
 script:
   - ./docker.build
+  - cat /etc/forecast/darksky_api_key
