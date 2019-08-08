@@ -4,6 +4,7 @@ services:
   - docker
 
 before_install:
+  - mkdir /etc/forecast/ && touch /etc/forecast/darksky_api_key
   - echo $DARKSKY_API | tee /etc/forecast/darksky_api_key
 
 script:
