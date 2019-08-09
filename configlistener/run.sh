@@ -6,5 +6,5 @@ do
    mkdir -p /etc/forecast/
    rm -f /etc/forecast/darksky_api_key;
    touch /etc/forecast/darksky_api_key;
-   echo $msg | tee /etc/forecast/darksky_api_key;
+   echo $RAW_DATA | tee /etc/forecast/darksky_api_key;
 done
