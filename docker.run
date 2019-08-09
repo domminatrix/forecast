@@ -15,7 +15,7 @@ docker network connect mqttnetwork srvMosquitto
 
 docker run --name ecouteconfig \
 	-v /tmp:/var/forecast/ \
-	-v /tmp:/etc/darksky
+	-v /tmp:/etc/darksky/ \
 	--network mqttnetwork \
 	--restart="always" \
 	--detach=true \
