@@ -1,0 +1,23 @@
+#!/bin/sh
+
+docker network create --driver bridge mqttnetwork -o "com.docker.networkbridge.name=mqttnetwork"
+docker volume create mosquitto_data
+docker volume create mosquitto_log
+docker run --name=srvMosquitto \
+	-p 1883:1883 \
+	-p 9001:9001 \
+	-v mosquitto_data:/mosquitto/data \
+	-v mosquitto_log:/mosquitto/log \
+	--restart="always" \
+	--detach=true \
+	eclipse-mosquitto
+docker network connect mqttnetwork srvMosquitto
+
+docker run --name ecouteconfig \
+	-v /tmp:/var/forecast/ \
+	-v /tmp:/etc/darksky
+	--network mqttnetwork \
+	--restart="always" \
+	--detach=true \
+	domminatrix/forecast:latest 
+
