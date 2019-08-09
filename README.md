@@ -3,5 +3,5 @@
 
 
 ## Build
-[![Build Status](https://travis-ci.org/wakan/homeass.svg?branch=master)](https://travis-ci.org/wakan/homeass)
+[![Build Status](https://travis-ci.org/domminatrix/forecastcor.svg?branch=master)](https://travis-ci.org/domminatrix/forecast)
 
