@@ -1,3 +1,4 @@
 #!/bin/sh
 docker build -t domminatrix/forecastconfiglistener:latest configlistener
+docker build -t domminatrix/forecastconfigcaller:latest configcaller
 
