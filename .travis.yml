@@ -9,4 +9,5 @@ before_install:
 
 script:
   - ./docker.build
+  - ./docker.run
   - cat docker/etc/forecast/darksky_api_key
