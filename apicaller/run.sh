@@ -25,7 +25,7 @@ mosquitto_pub -h srvMosquitto -t domminatrix/forecast/temperature/appear -q 1 -m
 HUMID=`echo $API_RESPONSE | jq .currently.humidity`
 mosquitto_pub -h srvMosquitto -t domminatrix/forecast/humidity -q 1 -m "${HUMID}"
 PRESS=`echo $API_RESPONSE | jq .currently.pressure`
-mosquitto_pub -h srvMosquitto -t domminatrix/forecast/pressure -q 1 -m "${HUMID}"
+mosquitto_pub -h srvMosquitto -t domminatrix/forecast/pressure -q 1 -m "${PRESS}"
 WIND_SPEED=`echo $API_RESPONSE | jq .currently.windSpeed`
 mosquitto_pub -h srvMosquitto -t domminatrix/forecast/wind/speed -q 1 -m "${WIND_SPEED}"
 WIND_RAF=`echo $API_RESPONSE | jq .currently.windGust`
