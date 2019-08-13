@@ -26,4 +26,11 @@ docker run --name forecastconfigcaller \
 	--rm \
 	--detach=true \
 	domminatrix/forecastconfigcaller:latest 
+sleep 4
+
+docker run --name forecastapicaller \
+	--rm \
+	--detach=true \
+	domminatrix/forecastapicaller:latest 
+docker network connect mqttnetwork forecastapicaller
 
