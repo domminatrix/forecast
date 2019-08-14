@@ -1,5 +1,5 @@
---- configcaller/Dockerfile	2019-08-13 15:00:24.882063271 +0200
-+++ configcaller/Dockerfile.tmp	2019-08-13 15:06:32.449080798 +0200
+--- src/test/config/configcaller/Dockerfile	2019-08-13 15:00:24.882063271 +0200
++++ src/test/config/configcaller/Dockerfile.tmp	2019-08-13 15:06:32.449080798 +0200
 @@ -4 +4 @@
 -CMD mosquitto_pub -h srvMosquitto -t domminatrix/forecast/configure -q 1 -m "KEY-DARKSKY-API_43.29695_5.38107"
 +CMD mosquitto_pub -h srvMosquitto -t domminatrix/forecast/configure -q 1 -m "XXXXXXXXXXXXXXXXXXXXX_43.29695_5.38107"
