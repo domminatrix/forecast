@@ -15,7 +15,6 @@ docker network connect mqttnetwork srvMosquitto
 
 docker volume create forecastconfig
 docker run --name forecastconfiglistener \
-	-v /tmp:/var/forecast/ \
 	-v forecastconfig:/etc/forecast/ \
 	--network mqttnetwork \
 	--restart="always" \
