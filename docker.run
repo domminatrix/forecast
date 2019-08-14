@@ -13,9 +13,10 @@ docker run --name=srvMosquitto \
 	eclipse-mosquitto
 docker network connect mqttnetwork srvMosquitto
 
+docker volume create forecastconfig
 docker run --name forecastconfiglistener \
 	-v /tmp:/var/forecast/ \
-	-v /tmp:/etc/forecast/ \
+	-v forecastconfig:/etc/forecast/ \
 	--network mqttnetwork \
 	--restart="always" \
 	--detach=true \
@@ -41,7 +42,7 @@ docker run --name forecastconfigcaller \
 	domminatrix/forecastconfigcaller:latest 
 
 docker run --name forecastapicaller \
-	-v /tmp:/etc/forecast/ \
+	-v forecastconfig:/etc/forecast/ \
 	--detach=true \
 	-it \
 	domminatrix/forecastapicaller:latest 
