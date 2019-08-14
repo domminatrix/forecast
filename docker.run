@@ -21,17 +21,25 @@ docker run --name forecastconfiglistener \
 	--detach=true \
 	domminatrix/forecastconfiglistener:latest 
 
-docker run --name forecastconfigcaller \
+docker run --name forecastconfigcalltester \
 	--network mqttnetwork \
 	--rm \
 	--detach=true \
-	domminatrix/forecastconfigcaller:latest 
+	domminatrix/forecastconfigcalltester:latest 
+
 docker run --name forecastapicalltester \
 	--network mqttnetwork \
 	--rm \
 	--detach=true \
 	domminatrix/forecastapicalltester:latest 
 sleep 4
+
+docker run --name forecastconfigcaller \
+	--network mqttnetwork \
+	--rm \
+	--detach=true \
+	domminatrix/forecastconfigcaller:latest 
+
 docker run --name forecastapicaller \
 	-v /tmp:/etc/forecast/ \
 	--detach=true \
@@ -39,3 +47,4 @@ docker run --name forecastapicaller \
 	domminatrix/forecastapicaller:latest 
 docker network connect mqttnetwork forecastapicaller
 
+docker ps
