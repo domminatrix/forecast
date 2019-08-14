@@ -1,5 +1,7 @@
 #!/bin/sh
 
+source func_send_config.sh
+
 #TODO : Etudier le -q
 mosquitto_sub -h  srvMosquitto -t domminatrix/forecast/configure -q 1 | while read RAW_DATA
 do
@@ -13,4 +15,5 @@ do
    rm -f /etc/forecast/longitude;
    touch /etc/forecast/longitude;
    echo $RAW_DATA | cut -d '_' -f3 | tee /etc/forecast/longitude;
+   send_conf_mqtt
 done
