@@ -7,5 +7,3 @@ script:
   - ./docker.build
   - ./docker.run
   - sleep 2
-  - cat /tmp/darksky_api_key
-  - sleep 4
