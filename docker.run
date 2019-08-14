@@ -27,6 +27,12 @@ docker run --name forecastconfigcalltester \
 	--detach=true \
 	domminatrix/forecastconfigcalltester:latest 
 
+docker run --name forecastconfigupdatelistener \
+	--network mqttnetwork \
+	--rm \
+	--detach=true \
+	domminatrix/forecastconfigupdatelistener:latest 
+
 docker run --name forecastapicalltester \
 	--network mqttnetwork \
 	--rm \

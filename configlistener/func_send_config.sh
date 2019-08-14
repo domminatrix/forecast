@@ -1,5 +1,5 @@
-send_conf_mqtt() {
-local DATA="[ \
+set_config_in_var() {
+CONF_REF="[ \
   { \
     \"top\":\"domminatrix/forecast/precip/intensity\", \
     \"dir\":0, \
@@ -69,8 +69,11 @@ local DATA="[ \
     \"freq\":\"*/10 * * * *\" \
   } \
 ]"
-echo "$DATA"  
-mosquitto_pub -h srvMosquitto -t domminatrix/forecast/configure/resp -q 1 -m "${DATA}"
-#TODO : Etudier le -q
+echo "$CONF_REF"  
+}
 
+send_conf_mqtt() {
+	set_config_in_var
+	mosquitto_pub -h srvMosquitto -t domminatrix/forecast/configure/resp -q 1 -m "${CONF_REF}"
+	#TODO : Etudier le -q
 }
