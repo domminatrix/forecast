@@ -1,4 +1,4 @@
-send_conf() {
+send_conf_mqtt() {
 local DATA="[ \
   { \
     \"top\":\"domminatrix\/forecast\/precip\/intensity\", \
