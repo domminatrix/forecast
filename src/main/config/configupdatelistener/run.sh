@@ -6,10 +6,13 @@ source func_send_config.sh
 mosquitto_sub -h  srvMosquitto -t domminatrix/forecast/configure/isupdated -q 1 | while read RAW_DATA
 do
 set_config_in_var
-echo $"CONF_REF"
 cr=$(echo "$RAW_DATA" | jq -cSM .)
 rd=$(echo "$CONF_REF" | jq -cSM .)
-if [ "$cr" -eq "$rd" ]; then
+echo "cr"
+echo "$cr"
+echo rd
+echo "$rd"
+if [ "$cr" == "$rd" ]; then
     echo "Matched"
     mosquitto_pub -h srvMosquitto -q 1 -t domminatrix/forecast/configure/isupdated/resp -m 0
 else

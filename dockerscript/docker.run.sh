@@ -33,6 +33,12 @@ docker run --name forecastconfigupdatelistener \
 	--detach=true \
 	domminatrix/forecastconfigupdatelistener:latest 
 
+docker run --name forecastconfigcallisupdatedtester \
+	--network mqttnetwork \
+	--rm \
+	--detach=true \
+	domminatrix/forecastconfigcallisupdatedtester:latest
+
 docker run --name forecastapicalltester \
 	--network mqttnetwork \
 	--rm \
@@ -45,6 +51,18 @@ docker run --name forecastconfigcaller \
 	--rm \
 	--detach=true \
 	domminatrix/forecastconfigcaller:latest 
+	
+docker run --name forecastconfigupdatecallernotupdated \
+	--network mqttnetwork \
+	--rm \
+	--detach=true \
+	domminatrix/forecastconfigupdatecallernotupdated:latest
+
+docker run --name forecastconfigupdatecallerupdated \
+	--network mqttnetwork \
+	--rm \
+	--detach=true \
+	domminatrix/forecastconfigupdatecallerupdated:latest
 
 docker run --name forecastapicaller \
 	-v forecastconfig:/etc/forecast/ \
