@@ -4,6 +4,6 @@ services:
   - docker
 
 script:
-  - dockerscript/docker.build.sh
-  - dockerscript/docker.run.sh
+  - dockerscript/build.sh
+  - dockerscript/run.sh
   - sleep 2
