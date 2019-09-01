@@ -1,74 +1,91 @@
 #!/bin/sh
 
-docker network create --driver bridge mqttnetwork -o "com.docker.networkbridge.name=mqttnetwork"
+
+docker service create --name swarm_cronjob \
+  --mount type=bind,source=/var/run/docker.sock,target=/var/run/docker.sock \
+  --env "LOG_LEVEL=info" \
+  --env "LOG_JSON=false" \
+  --constraint "node.role == manager" \
+  crazymax/swarm-cronjob
+
+docker network create --driver=overlay mqttnetwork
 docker volume create mosquitto_data
 docker volume create mosquitto_log
-docker run --name=srvMosquitto \
+docker service create  --name=srvMosquitto \
 	-p 1883:1883 \
 	-p 9001:9001 \
-	-v mosquitto_data:/mosquitto/data \
-	-v mosquitto_log:/mosquitto/log \
-	--restart="always" \
+	--mount type=volume,source=mosquitto_data,destination=/mosquitto/data,volume-label="color=red",volume-label="shape=round" \
+	--mount type=volume,source=mosquitto_log,destination=/mosquitto/log,volume-label="color=red",volume-label="shape=round" \
 	--detach=true \
+	--network=mqttnetwork \
 	eclipse-mosquitto
-docker network connect mqttnetwork srvMosquitto
 
 docker volume create forecastconfig
-docker run --name forecastconfiglistener \
-	-v forecastconfig:/etc/forecast/ \
+docker service create --name forecastconfiglistener \
+	--mount type=volume,source=forecastconfig,destination=/etc/forecast,volume-label="color=red",volume-label="shape=round" \
 	--network mqttnetwork \
-	--restart="always" \
 	--detach=true \
 	domminatrix/forecastconfiglistener:latest 
 
-docker run --name forecastconfigcalltester \
+docker service create --name forecastconfigcalltester \
 	--network mqttnetwork \
-	--rm \
 	--detach=true \
 	domminatrix/forecastconfigcalltester:latest 
 
-docker run --name forecastconfigupdatelistener \
+docker service create --name forecastconfigupdatelistener \
 	--network mqttnetwork \
-	--rm \
 	--detach=true \
 	domminatrix/forecastconfigupdatelistener:latest 
 
-docker run --name forecastconfigcallisupdatedtester \
+docker service create --name forecastconfigcallisupdatedtester \
+	--label "swarm.cronjob.enable=true" \
+	--label "swarm.cronjob.skip-running=false" \
+	--label "swarm.cronjob.schedule=0 \*/2 \* \* \* \*" \
 	--network mqttnetwork \
-	--rm \
 	--detach=true \
 	domminatrix/forecastconfigcallisupdatedtester:latest
 
-docker run --name forecastapicalltester \
+docker service create --name forecastapicalltester \
+	--label "swarm.cronjob.enable=true" \
+	--label "swarm.cronjob.skip-running=false" \
+	--label "swarm.cronjob.schedule=0 \*/10 \* \* \* \*" \
 	--network mqttnetwork \
-	--rm \
 	--detach=true \
 	domminatrix/forecastapicalltester:latest 
 sleep 4
 
-docker run --name forecastconfigcaller \
+docker service create --name forecastconfigcaller \
+	--label "swarm.cronjob.enable=true" \
+	--label "swarm.cronjob.skip-running=false" \
+	--label "swarm.cronjob.schedule=0 \*/4 \* \* \* \*" \
 	--network mqttnetwork \
-	--rm \
 	--detach=true \
 	domminatrix/forecastconfigcaller:latest 
 	
-docker run --name forecastconfigupdatecallernotupdated \
+docker service create --name forecastconfigupdatecallernotupdated \
+	--label "swarm.cronjob.enable=true" \
+	--label "swarm.cronjob.skip-running=false" \
+	--label "swarm.cronjob.schedule=0 \* \* \* \* \*" \
 	--network mqttnetwork \
-	--rm \
 	--detach=true \
 	domminatrix/forecastconfigupdatecallernotupdated:latest
 
-docker run --name forecastconfigupdatecallerupdated \
+docker service create --name forecastconfigupdatecallerupdated \
+	--label "swarm.cronjob.enable=true" \
+	--label "swarm.cronjob.skip-running=false" \
+	--label "swarm.cronjob.schedule=0 \* \* \* \* \*" \
 	--network mqttnetwork \
-	--rm \
 	--detach=true \
 	domminatrix/forecastconfigupdatecallerupdated:latest
 
-docker run --name forecastapicaller \
-	-v forecastconfig:/etc/forecast/ \
+docker service create --name forecastapicaller \
+	--mount type=volume,source=forecastconfig,destination=/etc/forecast,volume-label="color=red",volume-label="shape=round" \
+	--label "swarm.cronjob.enable=true" \
+	--label "swarm.cronjob.skip-running=false" \
+	--label "swarm.cronjob.schedule=0 \*/10 \* \* \* \*" \
+	--network mqttnetwork \
 	--detach=true \
-	-it \
+	-t \
 	domminatrix/forecastapicaller:latest 
-docker network connect mqttnetwork forecastapicaller
 
 docker ps
