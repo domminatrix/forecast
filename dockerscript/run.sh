@@ -8,7 +8,7 @@ docker service create --name swarm_cronjob \
   --constraint "node.role == manager" \
   crazymax/swarm-cronjob
 
-docker network create --driver=overlay mqttnetwork
+docker network create --driver=overlay --attachable mqttnetwork
 docker volume create mosquitto_data
 docker volume create mosquitto_log
 docker service create  --name=srvMosquitto \
